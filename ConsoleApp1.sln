@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2041
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{984BEB30-B721-4ADB-A362-12D80BE7249E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultithreadingHomework", "ConsoleApp1\MultithreadingHomework.csproj", "{984BEB30-B721-4ADB-A362-12D80BE7249E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

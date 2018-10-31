@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ConsoleApp1
+namespace MultithreadingHomework    
 {
-    class Program
+    internal class Program
     {
-        static private int[,] matrixA = {
+        private static readonly int[,] MatrixA = {
                 { 0, 0, 0, 0 },
                 { 0, 1, 2, 3 },
                 { 0, 2, 4, 6 },
@@ -14,68 +14,81 @@ namespace ConsoleApp1
             };
 
 
-        static private int[,] matrixB = {
+        private static readonly int[,] MatrixB = {
                 { 0, 1, 2, 3 },
                 { 1, 2, 3, 4 },
                 { 2, 3, 4, 5 },
                 { 3, 4, 5, 6 }
             };
 
-        static private int[,] matrixC = new int[4, 4];
+        private static readonly int[,] MatrixC = new int[4, 4];
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-
-
             Console.WriteLine("Matrix A");
-            printMatrix(matrixA);
-
+            PrintMatrix(MatrixA);
 
             Console.WriteLine("Matrix B");
-            printMatrix(matrixB);
+            PrintMatrix(MatrixB);
 
-
+            // Run concurrent processes
             RunThreads();
 
+            // Keeps window open until ENTER key is pressed
             Console.ReadLine();
-
         }
 
         public static void RunThreads()
         {
-            Action<object> action = (object obj) =>
+            void CalculateRow(object obj)
             {
-                int Id = (int)Task.CurrentId - 1;
-                Console.WriteLine($"Thread {Id} starting");
-                for (int i = 0; i < 4; i++)
+                var i = (int)obj;
+
+                if (Task.CurrentId == null)
                 {
-                    int product = matrixC[Id, i] = matrixA[Id, i] * matrixB[Id, i];
-                    Console.WriteLine($"Thread {Id} calculating element C[{Id}, {i}]={product}");
-                    matrixC[Id, i] = product;
+                    return;
                 }
-            };
 
-            var tasks = new List<Task>();
+                var id = (int)Task.CurrentId - 1;
 
-            for (int i = 0; i < 4; i++)
-            {
-                tasks.Add(Task.Factory.StartNew(action, i));
+                Console.WriteLine($"Thread {id} starting.");
+
+                for (var j = 0; j < 4; j++)
+                {
+                    for (var k = 0; k < 4; k++)
+                    {
+                        MatrixC[i, j] += MatrixA[i, k] * MatrixB[k, j];
+                    }
+
+                    var product = MatrixC[id, j];
+                    Console.WriteLine($"Thread {id} calculating element C[{id}, {j}]={product}.");
+                    MatrixC[id, j] = product;
+                }
             }
 
+            // Create four Tasks to calculate the four rows of Matrix C
+            var tasks = new List<Task>();
+
+            for (var i = 0; i < 4; i++)
+            {
+                tasks.Add(Task.Factory.StartNew(CalculateRow, i));
+            }
+
+            // Once all of the four concurrent processes finish, print Matrix C
             Task.WhenAll(tasks).ContinueWith(e => FinalConsoleWriteLine());
         }
 
-        static void FinalConsoleWriteLine()
+        private static void FinalConsoleWriteLine()
         {
-            Console.WriteLine("\nMatrix C");
-            printMatrix(matrixC);
+            Console.WriteLine("\nMultiplication of A and B");
+            PrintMatrix(MatrixC);
         }
 
-        static void printMatrix(int[,] matrix)
+        private static void PrintMatrix(int[,] matrix)
         {
-            for (int i = 0; i < 4; i++)
+            for (var i = 0; i < 4; i++)
             {
-                for (int j = 0; j < 4; j++)
+                for (var j = 0; j < 4; j++)
                 {
                     Console.Write($"{matrix[i, j]}  ");
                 }
