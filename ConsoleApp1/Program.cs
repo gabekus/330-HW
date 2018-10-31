@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace MultithreadingHomework    
+namespace MultithreadingHomework
 {
     internal class Program
     {
@@ -49,6 +49,7 @@ namespace MultithreadingHomework
                     return;
                 }
 
+                // Thread ID 
                 var id = (int)Task.CurrentId - 1;
 
                 Console.WriteLine($"Thread {id} starting.");
@@ -62,7 +63,6 @@ namespace MultithreadingHomework
 
                     var product = MatrixC[id, j];
                     Console.WriteLine($"Thread {id} calculating element C[{id}, {j}]={product}.");
-                    MatrixC[id, j] = product;
                 }
             }
 
