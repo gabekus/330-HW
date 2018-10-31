@@ -62,7 +62,7 @@ namespace ConsoleApp1
                 tasks.Add(Task.Factory.StartNew(action, i));
             }
 
-            Task.WhenAll(tasks).ContinueWith(e => finalConsoleWriteLine());
+            Task.WhenAll(tasks).ContinueWith(e => FinalConsoleWriteLine());
         }
 
         static void FinalConsoleWriteLine()
