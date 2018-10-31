@@ -65,7 +65,7 @@ namespace ConsoleApp1
             Task.WhenAll(tasks).ContinueWith(e => finalConsoleWriteLine());
         }
 
-        static void finalConsoleWriteLine()
+        static void FinalConsoleWriteLine()
         {
             Console.WriteLine("\nMatrix C");
             printMatrix(matrixC);
