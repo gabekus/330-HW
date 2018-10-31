@@ -27,7 +27,7 @@ namespace ConsoleApp1
         {
 
 
-            Console.WriteLine("Matrix");
+            Console.WriteLine("Matrix A");
             printMatrix(matrixA);
 
 
